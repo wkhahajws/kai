@@ -2,9 +2,33 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${name}">name</title>
+    <title>提交表单</title>
+    <style>
+        .warn{
+            color:red;
+        }
+    </style>
 </head>
 <body>
-    <h1 th:text="${name}">name</h1>
+    <form th:action="@{/user}" th:object="${user}" method="post" >
+        <div>
+        姓名：<input type="text" th:field="*{name}">
+            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="warn"></span>
+        </div>
+        <div>
+        年龄: <input type="text" th:field="*{age}">
+            <span th:if="${#fields.hasErrors('age')}" th:errors="*{age}" class="warn"></span>
+        </div>
+        <div>
+        邮箱: <input type="text" th:field="*{email}">
+            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="warn"></span>
+        </div>
+        <div>
+        答案：<input type="text" th:field="*{answer}">
+            <span th:if="${#fields.hasErrors('answer')}" th:errors="*{answer}" class="warn"></span>
+        </div>
+        <button type="submit">提交</button>
+
+    </form>
 </body>
 </html>
