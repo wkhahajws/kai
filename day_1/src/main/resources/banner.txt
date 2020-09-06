@@ -5,6 +5,10 @@ ${AnsiColor.BRIGHT_RED}
 |    <  / __ \|  |  \___ \|   Y  \  ___/|   |  \
 |__|_ \(____  /__| /____  >___|  /\___  >___|  /
      \/     \/          \/     \/     \/     \/
+
+
+
+凯神威武！！！
 ${AnsiColor.BRIGHT_BLUE}
 spring-boot.version：${spring-boot.version}
 spring-boot.formatted.version：${spring-boot.formatted-version}
