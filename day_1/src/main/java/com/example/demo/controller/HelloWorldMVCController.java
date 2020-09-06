@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -22,5 +24,15 @@ public class HelloWorldMVCController {
     public String sayhelloWorld(Model mv){
         mv.addAttribute("name","hello,Spring boot MVC");
         return "index";
+    }
+
+    @GetMapping("/getUser")
+    public ModelAndView getUser(){
+        ModelAndView mv = new ModelAndView("getUser");
+        User user = new User();
+        user.setName("jinwenshu");
+        user.setAge(20);
+        mv.addObject("user",user);
+        return mv;
     }
 }
