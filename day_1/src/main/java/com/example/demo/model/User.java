@@ -5,6 +5,7 @@ import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.*;
+import java.io.Serializable;
 
 /**
  * FileName:User
@@ -16,7 +17,7 @@ import javax.validation.constraints.*;
  * 作者姓名  修改时间  版本号    描述
  */
 @Data
-public class User {
+public class User implements Serializable {
     private long id;
 
     @NotBlank(message = "用户名不能为空")

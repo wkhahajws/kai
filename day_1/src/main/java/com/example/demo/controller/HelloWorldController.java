@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import com.example.demo.mq.CustomSender;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,9 +17,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HelloWorldController {
+    @Autowired
+    private CustomSender customSender;
 
     @RequestMapping("/hello")
     public String sayHello(){
         return "hello,spring boot";
+    }
+
+    @RequestMapping("/test")
+    public String test(){
+        customSender.sendMessage("hello World");
+        return "oooo";
     }
 }
