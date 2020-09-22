@@ -102,6 +102,25 @@
 			<artifactId>logstash-logback-encoder</artifactId>
 			<version>5.3</version>
 		</dependency>
+
+		<!--elasticsearch依赖-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+		</dependency>
+
+		<!--<dependency>
+			<groupId>org.elasticsearch.client</groupId>
+			<artifactId>elasticsearch-rest-high-level-client</artifactId>
+			<version>7.9.1</version>
+		</dependency>-->
+
+		<!-- json依赖-->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.33</version>
+		</dependency>
 	</dependencies>
 
 	<build>
