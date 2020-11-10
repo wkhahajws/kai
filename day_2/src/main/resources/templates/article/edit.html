@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form th:action="@{/article/save/}+${article.id}" method="post">
+        <input type="hidden" name="_method" value="put">
+        <input type="hidden" id="createTime" name="createTime" th:value="${article.createTime}"/>
+        ID: <input type="text" id="id" name="id" th:value="${article.id}">
+        标题：<input type="text" id="title" name="title" th:value="${article.title}">
+        内容：<input type="text" id="body" name="body" th:value="${article.body}">
+        <input type="submit" value="提交">
+    </form>
+</body>
+</html>

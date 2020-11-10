@@ -1,5 +1,6 @@
 package com.example.demo.test;
 
+import com.example.demo.model.U;
 import com.example.demo.model.User;
 import com.example.demo.mq.SenderA;
 import com.example.demo.mq.UserQueue1Sender;
@@ -24,6 +25,7 @@ import java.util.Date;
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class MQTest {
+
 
     @Autowired
     private SenderA queueSender;

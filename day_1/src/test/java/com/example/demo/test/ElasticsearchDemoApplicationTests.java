@@ -15,7 +15,6 @@ import org.elasticsearch.client.indices.CreateIndexRequest;
 import org.elasticsearch.client.indices.CreateIndexResponse;
 import org.elasticsearch.client.indices.GetIndexRequest;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,10 +68,10 @@ public class ElasticsearchDemoApplicationTests {
 
     @Test
     public void test3(){
-        Product product = new Product("王凯", 25);
+        /*Product product = new Product("王凯", 25);*/
         IndexRequest request = new IndexRequest("posts");
         request.id("1");
-        request.source(JSONArray.toJSON(product), XContentType.JSON);
+        /*request.source(JSONArray.toJSON(product), XContentType.JSON);*/
         try {
             IndexResponse indexResponse = client.index(request, RequestOptions.DEFAULT);
 
@@ -93,10 +92,10 @@ public class ElasticsearchDemoApplicationTests {
         bulkRequest.timeout("10s");
         //模拟数据
         ArrayList<Product> products = new ArrayList<>();
-        products.add(new Product("张1",1));
+        /*products.add(new Product("张1",1));
         products.add(new Product("张2",2));
         products.add(new Product("张3",3));
-        products.add(new Product("张4",4));
+        products.add(new Product("张4",4));*/
         int i=0 ;
         //批量插入
         for(Product product:products){

@@ -22,7 +22,7 @@ public class SenderA {
 
     public void send(String context){
         System.out.println("sender:"+context);
-        //使用AmqpTemplate将消息发送到消息队列QueueHello中去
+        //使用AmqpTemplate将消息发送到消息队列Queue1中去
         this.amqpTemplate.convertAndSend("Queue1",context);
     }
 }

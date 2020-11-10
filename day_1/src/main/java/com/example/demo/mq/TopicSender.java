@@ -21,18 +21,21 @@ public class TopicSender {
     public void send(){
         String context = "topic";
         System.out.println("Sender:"+context);
+        //第一个参数是交换机，第二个参数是Routing key,第三个是消息
         this.amqpTemplate.convertAndSend("topicExchange","topic.1",context);
     }
 
     public void send2(){
         String context = "topic.2";
         System.out.println("Sender:"+context);
+        //第一个参数是交换机，第二个参数是Routing key,第三个是消息
         this.amqpTemplate.convertAndSend("topicExchange","topic.a",context);
     }
 
     public void send3(){
         String context = "topic.3";
         System.out.println("Sender:"+context);
+        //第一个参数是交换机，第二个参数是Routing key,第三个是消息
         this.amqpTemplate.convertAndSend("topicExchange","topic.b",context);
     }
 }

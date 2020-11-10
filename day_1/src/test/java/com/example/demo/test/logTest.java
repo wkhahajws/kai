@@ -24,7 +24,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class logTest {
     private Logger logger = LoggerFactory.getLogger(logTest.class);
 
-
+    @Scheduled(fixedRate = 1000)
     @Test
     public void logtest(){
         logger.trace("trace 日志");

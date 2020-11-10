@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RabbitListener(queues = "Queue1")
 public class ReceiverA {
-
+    //RabbitHandler来实现具体消费
     @RabbitHandler
     public void QueueReceiver(String Queue1){
         System.out.println("ReceiverA:" + Queue1);

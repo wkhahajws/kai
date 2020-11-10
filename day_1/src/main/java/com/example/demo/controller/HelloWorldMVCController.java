@@ -46,10 +46,10 @@ public class HelloWorldMVCController {
         return "index";
     }
 
-    @GetMapping("/results")
+    /*@GetMapping("/results")
     public String results(){
         return "results";
-    }
+    }*/
 
     @PostMapping("/user")
     public String pUser(@Valid User user, BindingResult bindingResult, RedirectAttributes attr){

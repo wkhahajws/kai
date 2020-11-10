@@ -1,17 +1,23 @@
 package com.example.demo.test;
 
 import com.example.demo.model.P;
+import com.example.demo.model.Product;
 import com.example.demo.repository.PRepository;
+import com.example.demo.repository.ProductRepository;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -33,24 +39,24 @@ import java.util.List;
 public class ProductControllerTest {
     private Integer PAGESIZE=10;
     @Autowired
-    private PRepository pRepository;
+    private ProductRepository productRepository;
 
     /**
      * 保存
      */
     @Test
     public void save() {
-        List<P> list = new ArrayList<P>();
-        list.add(new P(1600666304610L,
+        List<Product> list = new ArrayList<Product>();
+        list.add(new Product(1600666304610L,
                 "红富士","水果",7.99,"/img/p1.jpg","这是一个测试商品"));
-        list.add(new P(1600666304611L,
+        list.add(new Product(1600666304611L,
                 "金帅","水果",7.99,"/img/p1.jpg","金帅也和红富士一样，非常好吃，脆脆的"));
-        list.add(new P(1600666304612L,
+        list.add(new Product(1600666304612L,
                 "红富士","水果",7.99,"/img/p1.jpg","这是一个测试商品"));
-        list.add(new P(1600666304613L,
+        list.add(new Product(1600666304613L,
                 "红富士","水果",7.99,"/img/p1.jpg","这是一个测试商品"));
         Iterable iterable = list;
-        pRepository.saveAll(iterable);
+        productRepository.saveAll(iterable);
     }
 
     /**
@@ -58,7 +64,7 @@ public class ProductControllerTest {
      */
     @Test
     public void getP(){
-        P p = pRepository.findByName("红富士");
+        Product p = productRepository.findByName("红富士");
         System.out.println(p.getId());
     }
 
@@ -68,8 +74,8 @@ public class ProductControllerTest {
     @Test
     public void updateP(){
         long id = 1600666304612L;
-        P p = new P(id,"香蕉","水果",8.03,"/img/p2.jpg","香蕉黄黄的，好吃又好用");
-        pRepository.save(p);
+        Product p = new Product(id,"香蕉","水果",8.03,"/img/p2.jpg","香蕉黄黄的，好吃又好用");
+        productRepository.save(p);
     }
 
     /**
@@ -77,7 +83,7 @@ public class ProductControllerTest {
      */
     @Test
     public void getPById(){
-        P p = pRepository.findById(1600664137366L);
+        Product p = productRepository.findById(1600666304611L);
         System.out.println(p.toString());
     }
 
@@ -87,7 +93,7 @@ public class ProductControllerTest {
     @Test
     public void deleteByID(){
         long id = 1600664137366L;
-        pRepository.deleteById(id);
+        productRepository.deleteById(id);
     }
 
     /**
@@ -95,8 +101,8 @@ public class ProductControllerTest {
      */
     @Test
     public void getPs(){
-        Iterable<P> it = pRepository.findAll(Sort.by("id").ascending());
-        for (P p:it
+        Iterable<Product> it = productRepository.findAll(Sort.by("id").ascending());
+        for (Product p:it
              ) {
             System.out.println(p);
         }
@@ -107,8 +113,8 @@ public class ProductControllerTest {
      */
     @Test
     public void findByPriceBetween(){
-        List<P> list = pRepository.findByPriceBetween(7.00, 8.00);
-        for (P p:list){
+        List<Product> list = productRepository.findByPriceBetween(7.00, 8.00);
+        for (Product p:list){
             System.out.println(p);
         }
     }
@@ -121,8 +127,17 @@ public class ProductControllerTest {
         NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder();
         nativeSearchQueryBuilder.withQuery(QueryBuilders.termQuery("name","富"));
 
-        Page<P> search = pRepository.search(nativeSearchQueryBuilder.build());
-        for (P p:search
+        //分页
+        int page = 0;
+        int size = 1;
+        nativeSearchQueryBuilder.withPageable(PageRequest.of(page,size));
+
+        //排序
+        nativeSearchQueryBuilder.withSort(SortBuilders.fieldSort("id").order(SortOrder.ASC));
+
+        Page<Product> search = productRepository.search(nativeSearchQueryBuilder.build());
+
+        for (Product p:search
              ) {
             System.out.println(p);
         }
@@ -135,8 +150,8 @@ public class ProductControllerTest {
     public void termsQuery(){
         NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder();
         nativeSearchQueryBuilder.withQuery(QueryBuilders.termsQuery("name","富","帅"));
-        Page<P> search = pRepository.search(nativeSearchQueryBuilder.build());
-        for (P p:search
+        Page<Product> search = productRepository.search(nativeSearchQueryBuilder.build());
+        for (Product p:search
         ) {
             System.out.println(p);
         }
@@ -149,8 +164,8 @@ public class ProductControllerTest {
     public void matchQuery(){
         NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder();
         nativeSearchQueryBuilder.withQuery(QueryBuilders.matchQuery("name","红士"));
-        Page<P> search = pRepository.search(nativeSearchQueryBuilder.build());
-        for (P p:search
+        Page<Product> search = productRepository.search(nativeSearchQueryBuilder.build());
+        for (Product p:search
         ) {
             System.out.println(p);
         }
@@ -163,8 +178,8 @@ public class ProductControllerTest {
     public void multiMatchQuery(){
         NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder();
         nativeSearchQueryBuilder.withQuery(QueryBuilders.multiMatchQuery("红富士金帅","name","body"));
-        Page<P> search = pRepository.search(nativeSearchQueryBuilder.build());
-        for (P p:search
+        Page<Product> search = productRepository.search(nativeSearchQueryBuilder.build());
+        for (Product p:search
         ) {
             System.out.println(p);
         }
@@ -177,8 +192,8 @@ public class ProductControllerTest {
     public void queryStringQuery(){
         NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder();
         nativeSearchQueryBuilder.withQuery(QueryBuilders.queryStringQuery("我觉得红富士好吃").field("name"));
-        Page<P> search = pRepository.search(nativeSearchQueryBuilder.build());
-        for (P p:search
+        Page<Product> search = productRepository.search(nativeSearchQueryBuilder.build());
+        for (Product p:search
              ) {
             System.out.println(p);
         }
@@ -191,36 +206,36 @@ public class ProductControllerTest {
     public void prefixQuery(){
         NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder();
         nativeSearchQueryBuilder.withQuery(QueryBuilders.prefixQuery("name","士"));
-        Page<P> search = pRepository.search(nativeSearchQueryBuilder.build());
-        for (P p:search
+        Page<Product> search = productRepository.search(nativeSearchQueryBuilder.build());
+        for (Product p:search
              ) {
             System.out.println(p);
         }
     }
 
     /**
-     * 模糊查询之通配符*
+     * 模糊查询之通配符* 匹配多个值
      */
     @Test
     public void wildcardQuery(){
         NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder();
         nativeSearchQueryBuilder.withQuery(QueryBuilders.wildcardQuery("name","金*"));
-        Page<P> search = pRepository.search(nativeSearchQueryBuilder.build());
-        for (P p:search
+        Page<Product> search = productRepository.search(nativeSearchQueryBuilder.build());
+        for (Product p:search
              ) {
             System.out.println(p);
         }
     }
 
     /**
-     * 模糊查询之通配符?
+     * 模糊查询之通配符? 匹配一个值
      */
     @Test
     public void wildcardQuery2(){
         NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder();
         nativeSearchQueryBuilder.withQuery(QueryBuilders.wildcardQuery("name","金?"));
-        Page<P> search = pRepository.search(nativeSearchQueryBuilder.build());
-        for (P p:search
+        Page<Product> search = productRepository.search(nativeSearchQueryBuilder.build());
+        for (Product p:search
              ) {
             System.out.println(p);
         }
@@ -233,8 +248,8 @@ public class ProductControllerTest {
     public void fuzzyQuery(){
         NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder();
         nativeSearchQueryBuilder.withQuery(QueryBuilders.fuzzyQuery("name","士").fuzziness(Fuzziness.ONE));
-        Page<P> search = pRepository.search(nativeSearchQueryBuilder.build());
-        for (P p:search
+        Page<Product> search = productRepository.search(nativeSearchQueryBuilder.build());
+        for (Product p:search
              ) {
             System.out.println(p);
         }

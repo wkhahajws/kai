@@ -40,7 +40,6 @@ public class RabbitmqConfig {
         return new Queue("topic.b");
     }
 
-
     @Bean
     TopicExchange exchange(){
         return new TopicExchange("topicExchange");
